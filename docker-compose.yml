@@ -1,28 +1,23 @@
+
 version: "3.3"
 services:
+
   mariadb:
+    container_name: anon-blog-mariadb
     environment:
       MARIADB_USER: "${MARIADB_USER}"
       MARIADB_PASSWORD: "${SECRET_KEY}"
       MARIADB_ROOT_PASSWORD: "${SECRET_KEY}"
       MARIADB_DATABASE: "${MARIADB_DATABASE}"
     image: "mariadb:10.6"
-    restart: unless-stopped:5
+    restart: unless-stopped
     ports:
       - 127.0.0.1:3306:3306
-  migrate:
-    depends_on:
-      - mariadb
-    environment:
-      SECRET_KEY: "${SECRET_KEY}"
-      SQLALCHEMY_DATABASE_URI: "mariadb+mariadbconnector://${MARIADB_USER}:${SECRET_KEY}@mariadb:3306/${MARIADB_DATABASE}"
-      SQLALCHEMY_TRACK_MODIFICATIONS: "${SQLALCHEMY_TRACK_MODIFICATIONS}"
-    build: .
-    command: venv/bin/flask db upgrade
+
   web:
+    container_name: anon-blog-web
     depends_on:
       - mariadb
-      - migrate
     environment:
       SECRET_KEY: "${SECRET_KEY}"
       SQLALCHEMY_DATABASE_URI: "mariadb+mariadbconnector://${MARIADB_USER}:${SECRET_KEY}@mariadb:3306/${MARIADB_DATABASE}"
@@ -30,5 +25,5 @@ services:
     build: .
     ports:
       - 127.0.0.1:5005:5000
-    restart: unless-stopped:5
+    restart: unless-stopped
 
