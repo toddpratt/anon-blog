@@ -1,4 +1,4 @@
-from sqlalchemy.orm import relationship, backref
+from sqlalchemy.orm import relationship
 
 from extensions import db
 
