@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import create_access_token, create_refresh_token, set_access_cookies, set_refresh_cookies
+from sqlalchemy.exc import IntegrityError
 
 import models
 from extensions import db, bcrypt
@@ -15,7 +16,10 @@ def post_user():
         password=bcrypt.generate_password_hash(request.json.get("password"))
     )
     db.session.add(user)
-    db.session.commit()
+    try:
+        db.session.commit()
+    except IntegrityError:
+        return {"status": "failed"}
     return {"status": "success", "new_id": user.id}
 
 
