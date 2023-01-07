@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify
-from flask_jwt_extended import create_access_token, create_refresh_token, set_access_cookies, set_refresh_cookies
+from flask_jwt_extended import create_access_token, create_refresh_token, set_access_cookies, set_refresh_cookies, \
+    unset_jwt_cookies, unset_access_cookies, unset_refresh_cookies
 from sqlalchemy.exc import IntegrityError
 
 import models
@@ -37,3 +38,11 @@ def post_login():
         return resp
     return {"status": "failed"}
 
+
+@user_bp.route("/logout", methods=["DELETE"])
+def delete_login():
+    resp = jsonify({'success': True})
+    unset_jwt_cookies(resp)
+    unset_access_cookies(resp)
+    unset_refresh_cookies(resp)
+    return resp, 200

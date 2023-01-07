@@ -1,10 +1,12 @@
 import os
 
-from flask import Flask
+from flask import Flask, g
+from flask_jwt_extended import get_jwt_identity, verify_jwt_in_request
 
 from blog import blog_bp
 
 from extensions import db, migrate, jwt, bcrypt, cors
+from models import User
 from settings import SECRET_KEY, SQLALCHEMY_DATABASE_URI
 from user import user_bp
 
@@ -33,3 +35,8 @@ bcrypt.init_app(app)
 app.register_blueprint(user_bp)
 app.register_blueprint(blog_bp)
 
+
+@jwt.user_lookup_loader
+def user_lookup_callback(_jwt_header, jwt_data):
+    identity = jwt_data["sub"]
+    return User.query.filter_by(id=identity).one_or_none()

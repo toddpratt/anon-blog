@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from flask import Blueprint, request
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import jwt_required, get_jwt_identity, current_user
 from sqlalchemy.orm import joinedload
 
 import models
@@ -41,12 +41,11 @@ def get_blogs():
 @blog_bp.route("/blogs", methods=["POST"])
 @jwt_required()
 def post_blog():
-    user_id = get_jwt_identity()
     blog = models.Blog(
         name=request.json.get("name"),
         description=request.json.get("description", ""),
         created=datetime.utcnow(),
-        user_id=user_id,
+        user_id=current_user.id,
     )
     db.session.add(blog)
     db.session.commit()
@@ -82,10 +81,23 @@ def get_posts(blog_id: int):
 @blog_bp.route("/blogs/<int:blog_id>/posts", methods=["POST"])
 @jwt_required()
 def post_post(blog_id: int):
+    blog = db.session.query(models.Blog).get(blog_id)
+    if blog.user_id != current_user.id:
+        return {
+            "status": "failed",
+            "reason": "You do not have access to this blog."
+        }, 403
+
+    title = request.json.get("title")
+    text = request.json.get("text")
+
+    if not title or not text:
+        return {"status": "failed", "reason": "Missing field title or text"}, 400
+
     post = models.Post(
         blog_id=blog_id,
-        title=request.json.get("title"),
-        text=request.json.get("text"),
+        title=title,
+        text=text,
         created=datetime.utcnow()
     )
     db.session.add(post)
