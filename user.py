@@ -5,13 +5,17 @@ from sqlalchemy.exc import IntegrityError
 
 import models
 from extensions import db, bcrypt
-
+from recaptcha import verify
+from settings import RECAPTCHA_SECRET
 
 user_bp = Blueprint('user_bp', __name__)
 
 
 @user_bp.route("/users", methods=["POST"])
 def post_user():
+    recaptcha_response = request.json.get("recaptcha")
+    if not verify(RECAPTCHA_SECRET, recaptcha_response):
+        return {"status": "recaptcha-failed"}
     user = models.User(
         username=request.json.get("username"),
         password=bcrypt.generate_password_hash(request.json.get("password"))
