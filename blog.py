@@ -2,6 +2,7 @@ from datetime import datetime
 
 from flask import Blueprint, request
 from flask_jwt_extended import jwt_required, get_jwt_identity, current_user
+from lxml.html.clean import clean_html
 from sqlalchemy.orm import joinedload
 
 import models
@@ -51,7 +52,31 @@ def post_blog():
     db.session.commit()
     return {
         "status": "success",
-        "new_id": blog.id
+        "new_id": blog.id,
+    }
+
+
+@blog_bp.route("/posts", methods=["GET"])
+def get_recent_posts():
+    offset = request.args.get("offset")
+    q = db.session.query(models.Post) \
+        .order_by(models.Post.created.desc()) \
+        .limit(10)
+    if offset:
+        q = q.offset(offset)
+    posts = [
+        {
+            "id": post.id,
+            "title": post.title,
+            "text": post.text,
+            "created": post.created,
+            "author": post.blog.user.username
+        }
+        for post in q
+    ]
+    return {
+        "status": "success",
+        "data": posts,
     }
 
 
@@ -89,7 +114,7 @@ def post_post(blog_id: int):
         }, 403
 
     title = request.json.get("title")
-    text = request.json.get("text")
+    text = clean_html(request.json.get("text"))
 
     if not title or not text:
         return {"status": "failed", "reason": "Missing field title or text"}, 400

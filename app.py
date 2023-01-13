@@ -1,7 +1,6 @@
 import os
 
-from flask import Flask, g
-from flask_jwt_extended import get_jwt_identity, verify_jwt_in_request
+from flask import Flask
 
 from blog import blog_bp
 
