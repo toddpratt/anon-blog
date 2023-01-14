@@ -25,7 +25,7 @@ def post_user():
         db.session.commit()
     except IntegrityError:
         return {"status": "failed"}
-    return {"status": "success", "new_id": user.id}
+    return {"status": "success", "newId": user.id}
 
 
 @user_bp.route("/login", methods=["POST"])
@@ -35,10 +35,7 @@ def post_login():
     user = db.session.query(models.User).filter_by(username=username).one_or_none()
     if user and bcrypt.check_password_hash(user.password, password):
         access_token = create_access_token(identity=user.id)
-        refresh_token = create_refresh_token(identity=user.id)
-        resp = jsonify({"status": "success"})
-        set_access_cookies(resp, access_token)
-        set_refresh_cookies(resp, refresh_token)
+        resp = jsonify({"status": "success", "token": access_token})
         return resp
     return {"status": "failed"}
 
