@@ -4,7 +4,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    docker.build("sample-python:${env.BUILD_NUMBER}")
+                    docker.build("anon-blog:${env.BUILD_NUMBER}")
                 }
             }
         }
