@@ -1,0 +1,2 @@
+-r requirements.txt
+mariadb==1.0.11
