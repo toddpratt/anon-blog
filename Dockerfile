@@ -1,7 +1,8 @@
 FROM python:3.11
 RUN mkdir -p /app
 WORKDIR /app
-COPY abapi/ /app
+COPY abapi/ /app/
+COPY migrations /app/migrations/
 COPY entrypoint.sh requirements.txt requirements-mariadb.txt /
 RUN python3 -m venv /venv && \
     /venv/bin/pip3 install --upgrade pip && \
