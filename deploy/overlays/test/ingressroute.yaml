@@ -2,7 +2,7 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: anon-blog-cert
-  namespace: anon-blog
+  namespace: anon-blog-test
 spec:
   secretName: anon-blog-cert-secret
   issuerRef:
@@ -15,15 +15,15 @@ apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: anon-blog
-  namespace: anon-blog
+  namespace: anon-blog-test
 spec:
   entryPoints:
   - websecure
   tls:
     secretName: anon-blog-cert-secret
   routes:
-  - match: Host("abapi.vengarl.com")
+  - match: Host(`abapi.vengarl.com`)
     kind: Rule
     services:
-    - name: test-anon-blog
+    - name: anon-blog
       port: 80
