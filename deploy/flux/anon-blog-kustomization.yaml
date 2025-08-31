@@ -5,7 +5,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 5m
-  path: ./deploy/overlays/production
+  path: ./deploy/overlays/test
   prune: true
   sourceRef:
     kind: GitRepository
