@@ -4,7 +4,7 @@ metadata:
   name: anon-blog
   namespace: anon-blog
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: anon-blog
@@ -18,3 +18,17 @@ spec:
         image: toddpratt/anon-blog:latest
         ports:
         - containerPort: 5000
+        env:
+        - name: CREDENTIALS_FILE
+          value: /config/creds.json
+        volumeMounts:
+        - name: config-volume
+          mountPath: /config
+          readOnly: true
+      volumes:
+      - name: config-volume
+        secret:
+          secretName: anon-blog-config
+          items:
+          - key: creds.json
+            path: creds.json
