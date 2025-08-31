@@ -1,0 +1,29 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: anon-blog-cert
+  namespace: anon-blog
+spec:
+  secretName: anon-blog-cert-secret
+  issuerRef:
+    name: letsencrypt-dns
+    kind: ClusterIssuer
+  dnsNames:
+  - abapi.vengarl.com
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: anon-blog
+  namespace: anon-blog
+spec:
+  entryPoints:
+  - websecure
+  tls:
+    secretName: anon-blog-cert-secret
+  routes:
+  - match: Host("abapi.vengarl.com")
+    kind: Rule
+    services:
+    - name: anon-blog
+      port: 5000

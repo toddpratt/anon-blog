@@ -1,0 +1,13 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: anon-blog
+  namespace: flux-system
+spec:
+  interval: 1m
+  url: https://github.com/toddpratt/anon-blog
+  ref:
+    branch: main
+  ignore: |
+    /*
+    !/deploy/

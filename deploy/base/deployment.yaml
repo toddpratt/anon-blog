@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: anon-blog
+  namespace: anon-blog
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: anon-blog
+  template:
+    metadata:
+      labels:
+        app: anon-blog
+    spec:
+      containers:
+      - name: anon-blog
+        image: toddpratt/anon-blog:latest
+        ports:
+        - containerPort: 5000
