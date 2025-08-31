@@ -26,4 +26,4 @@ spec:
     kind: Rule
     services:
     - name: anon-blog
-      port: 5000
+      port: 80
