@@ -25,5 +25,5 @@ spec:
   - match: Host("abapi.vengarl.com")
     kind: Rule
     services:
-    - name: anon-blog
+    - name: test-anon-blog
       port: 80
