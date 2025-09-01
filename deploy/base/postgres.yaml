@@ -25,28 +25,10 @@ spec:
     metadata:
       labels:
         app: postgres
-
-      annotations:
-        vault.hashicorp.com/agent-inject: "true"
-        vault.hashicorp.com/role: "anon-blog"
-
-        vault.hashicorp.com/agent-inject-secret-db-creds.env: "secret/data/anon-blog/postgres"
-        vault.hashicorp.com/agent-inject-template-db-creds.env: |
-          {{- with secret "secret/data/anon-blog/postgres" -}}
-          POSTGRES_USER={{ .Data.data.username }}
-          POSTGRES_PASSWORD={{ .Data.data.password }}
-          {{- end }}
-
     spec:
       containers:
       - name: postgres
         image: postgres:17
-        command: [ "/bin/sh", "-c" ]
-        args:
-          - |
-            export $(grep -v '^#' /vault/secrets/db-creds.env | xargs)
-            exec docker-entrypoint.sh postgres
-
         ports:
         - containerPort: 5432
         env:
