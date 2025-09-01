@@ -13,24 +13,6 @@ spec:
     metadata:
       labels:
         app: anon-blog
-      annotations:
-        vault.hashicorp.com/agent-inject: "true"
-        vault.hashicorp.com/role: "anon-blog"
-
-        # Inject one combined creds.json file
-        vault.hashicorp.com/agent-inject-secret-creds.json: "secret/data/anon-blog/postgres,secret/data/anon-blog/api"
-        vault.hashicorp.com/agent-inject-template-creds.json: |
-          {{- with secret "secret/data/anon-blog/postgres" -}}
-          {{- $pg_user := .Data.data.username -}}
-          {{- $pg_pass := .Data.data.password -}}
-          {{- end }}
-          {{- with secret "secret/data/anon-blog/api" -}}
-          {{- $secret_key := .Data.data.secret_key -}}
-          {{- end }}
-          {
-            "SQLALCHEMY_DATABASE_URI": "postgresql://{{ $pg_user }}:{{ $pg_pass }}@postgres.anon-blog-test.svc.cluster.local:5432/anonblog",
-            "SECRET_KEY": "{{ $secret_key }}"
-          }
     spec:
       containers:
       - name: anon-blog
