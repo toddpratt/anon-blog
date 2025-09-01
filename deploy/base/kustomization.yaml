@@ -4,3 +4,4 @@ resources:
   - service.yaml
   - postgres.yaml
   - service-account.yaml
+  - external-secret.yaml
