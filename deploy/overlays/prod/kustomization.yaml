@@ -4,3 +4,4 @@ namespace: anon-blog-prod
 patchesStrategicMerge:
   - external-secrets-patch.yaml
   - ingress-route-patch.yaml
+  - deployment-patch.yaml

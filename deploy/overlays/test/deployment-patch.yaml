@@ -1,0 +1,10 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: anon-blog
+  namespace: anon-blog
+spec:
+  template:
+    metadata:
+      annotations:
+        checksum/anon-blog-config: "{{ .Values.checksums.anonBlogConfig }}"
