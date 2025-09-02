@@ -9,7 +9,7 @@ spec:
     name: letsencrypt-dns
     kind: ClusterIssuer
   dnsNames:
-  - abapi.vengarl.com
+  - abapi-test.vengarl.com
 ---
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
