@@ -1,3 +1,4 @@
 resources:
   - anon-blog-test-kustomization.yaml
+  - anon-blog-prod-kustomization.yaml
   - source.yaml

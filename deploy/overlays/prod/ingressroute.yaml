@@ -22,7 +22,7 @@ spec:
   tls:
     secretName: anon-blog-cert-secret
   routes:
-  - match: Host(`abapi-test.vengarl.com`)
+  - match: Host(`abapi.vengarl.com`)
     kind: Rule
     services:
     - name: anon-blog
