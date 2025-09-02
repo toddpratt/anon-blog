@@ -5,3 +5,4 @@ resources:
   - postgres.yaml
   - service-account.yaml
   - external-secret.yaml
+  - ingress-route.yaml
