@@ -2,5 +2,5 @@ resources:
   - ../../base
 namespace: anon-blog-prod
 patchesStrategicMerge:
-  - external-secret-patch.yaml
+  - external-secrets-patch.yaml
   - ingress-route-patch.yaml
