@@ -14,6 +14,10 @@ spec:
       labels:
         app: anon-blog
     spec:
+      volumes:
+        - name: config-volume
+          secret:
+            secretName: anon-blog-config
       containers:
       - name: anon-blog
         image: toddpratt/anon-blog:latest
@@ -21,4 +25,9 @@ spec:
         - containerPort: 5000
         env:
         - name: CREDENTIALS_FILE
-          value: /vault/secrets/creds.json
+          value: /config/creds.json
+        volumeMounts:
+        - name: config-volume
+          mountPath: /config/creds.json
+          subPath: creds.json
+          readOnly: true
