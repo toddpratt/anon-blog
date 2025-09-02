@@ -6,6 +6,10 @@ metadata:
 spec:
   routes:
   - match: Host(`abapi-test.vengarl.com`)
+    kind: Rule
+    services:
+    - name: anon-blog
+      port: 80
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
