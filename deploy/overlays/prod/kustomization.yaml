@@ -1,4 +1,4 @@
 resources:
   - ../../base
   - ingressroute.yaml
-namespace: anon-blog-test
+namespace: anon-blog-prod
