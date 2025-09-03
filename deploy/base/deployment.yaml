@@ -4,7 +4,6 @@ metadata:
   name: anon-blog
   namespace: anon-blog
 spec:
-  serviceAccountName: anon-blog
   replicas: 2
   selector:
     matchLabels:
