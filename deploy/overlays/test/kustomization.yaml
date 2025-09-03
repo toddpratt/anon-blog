@@ -1,7 +1,9 @@
 resources:
-  - ../../base
+- ../../base
 namespace: anon-blog-test
-patchesStrategicMerge:
-  - external-secrets-patch.yaml
-  - ingress-route-patch.yaml
-  - deployment-patch.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+patches:
+- path: external-secrets-patch.yaml
+- path: ingress-route-patch.yaml
+- path: deployment-patch.yaml
