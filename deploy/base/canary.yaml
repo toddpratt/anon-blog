@@ -1,0 +1,31 @@
+apiVersion: flagger.app/v1beta1
+kind: Canary
+metadata:
+  name: anon-blog
+  namespace: anon-blog
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: anon-blog
+
+  service:
+    port: 80
+    targetPort: 5000
+
+  provider: traefik
+
+  analysis:
+    interval: 1m
+    threshold: 5
+    maxWeight: 50
+    stepWeight: 10
+    metrics:
+      - name: request-success-rate
+        thresholdRange:
+          min: 99
+        interval: 30s
+      - name: request-duration
+        thresholdRange:
+          max: 500
+        interval: 30s
